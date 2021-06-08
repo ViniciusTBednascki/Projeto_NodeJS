@@ -1,12 +1,27 @@
 const Atendimento = require('../models/atendimentos')
 
 module.exports = app => {
-    app.get('/atendimento', (req, res) => res.send("Você está na rota de atendimento e está realizando uma requisição GET"))
+    app.get('/atendimento', (req, res) => {
+        Atendimento.listar(res)
+    })
+
+    app.get('/atendimento/:id', (req,res) => {
+        const id = parseInt(req.params.id)
+
+        Atendimento.buscaPorId(id, res)
+    })
 
     app.post('/atendimento', (req, res) => {
         console.log('resolvendo requisição POST')
 
         const atendimento = req.body
         Atendimento.adicionar(atendimento, res)
+    })
+
+    app.patch('/atendimento/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        const valores = req.body
+
+        Atendimento.alterar(id, valores, res)
     })
 }
